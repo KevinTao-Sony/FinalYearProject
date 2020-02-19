@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component  } from 'react';
 import Web3 from 'web3';
-import './App.css';
+
 //import smart contract into the project
-import Project from "../abis/Project.json"
+import Project from "../abis/Project.json";
 import Navbar from "./Navbar";
-import Main from "./Main"
+import Feed from "./Feed";
+import './Main.css';
+
 
 
 class App extends Component {
   
-    
-    
     async componentWillMount() {
         await this.loadWeb3()
         await this.loadBlockchainData()
@@ -58,9 +58,10 @@ class App extends Component {
         }
     }
 
-    createPost(content) {
+
+    createPost(content, title) {
         this.setState({ loading: true })
-        this.state.project.methods.createPost(content).send({ from: this.state.account })
+        this.state.project.methods.createPost(content, title).send({ from: this.state.account })
             .on('receipt', (receipt) => {
                 console.log('loaded')
             })
@@ -83,18 +84,22 @@ class App extends Component {
     
   render() {
       return (
-        
-        <div>
+
+          <div>
+         
             <Navbar account={this.state.account} />
             {this.state.loading ? 
                 <div id="loader" className="text-center mt-5">
                     <p> Loading... </p>
                 </div>
-                    :
-                <Main
+                  :
+                  <div>
+
+                <Feed
                     posts={this.state.posts}
                     createPost={this.createPost}
-                />}
+                      />
+                  </div>}
         </div>
     );
   }

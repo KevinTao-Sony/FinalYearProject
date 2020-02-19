@@ -30,7 +30,7 @@ contract('Project', ([deployer, author]) => {
         let result, postCount
 
         before(async () => {
-            result = await project.createPost('test', { from: author })
+            result = await project.createPost('test', "title", { from: author })
             postCount = await project.postCount()
         })
 
@@ -40,6 +40,7 @@ contract('Project', ([deployer, author]) => {
             const event = result.logs[0].args
             assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
             assert.equal(event.content, 'test', 'content is correct')
+            assert.equal(event.title, 'title', 'title is correct')
             assert.equal(event.author, author, 'author is correct')
             //content must not be empty
             await project.createPost('', { from: author }).should.be.rejected

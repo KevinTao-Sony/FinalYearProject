@@ -10,12 +10,14 @@ contract Project {
 
 	struct Post {
 		uint id;
+		string title;
 		string content;
 		address author;
 	}
 	
 	event PostCreated(
 	uint id,
+	string title,
 	string content,
 	address author
 	);
@@ -25,19 +27,18 @@ contract Project {
 		name="project";
 	}
 
-	function createPost(string memory _content) public {
+	function createPost(string memory _content, string memory _title) public {
 		//require valid content solidity specific function, if 1 then run rest of code, 
 		//else stops and refund gas
 
-		
 		require(bytes(_content).length > 0 );
 
 		postCount++;
 		//make a post
-		posts[postCount] = Post(postCount, _content, msg.sender);
+		posts[postCount] = Post(postCount, _title, _content, msg.sender);
 		
 		//Trigger Event, solidty provides a way for users to track events 
-		emit PostCreated(postCount, _content, msg.sender);
+		emit PostCreated(postCount, _title, _content, msg.sender);
 
 	}
 }
