@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Identicon from "identicon.js";
-
-
 import './Main.css';
 
 class Feed extends Component {

@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\migrations",
+    "\\public",
+    "\\src",
+    "\\src\\abis",
+    "\\src\\atoms",
+    "\\src\\components",
+    "\\src\\contracts",
+    "\\test"
+  ],
+  "SelectedNode": "\\src\\atoms\\.gitattributes",
+  "PreviewInSolutionExplorer": false
+}
