@@ -59,9 +59,9 @@ class App extends Component {
     }
 
 
-    createPost(content, title) {
+    createPost(content) {
         this.setState({ loading: true })
-        this.state.project.methods.createPost(content, title).send({ from: this.state.account })
+        this.state.project.methods.createPost(content).send({ from: this.state.account })
             .on('receipt', (receipt) => {
                 console.log('loaded')
             })

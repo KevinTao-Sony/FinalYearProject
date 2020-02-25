@@ -13,19 +13,10 @@ class Feed extends Component {
                             <form onSubmit={(event) => {
                                 event.preventDefault()
                                 const content = this.postContent.value
-                                const title = this.postTitle.value
-                                this.props.createPost(content, title)
+
+                                this.props.createPost(content)
                             }}>
-                                <div className="form-group mr-sm-2">
-                                    <input
-                                        id="postTitle"
-                                        type="text"
-                                        ref={(input) => { this.postTitle = input }}
-                                        className="form-control"
-                                        placeholder="Title placeholder"
-                                        required />
-                                </div>
-                                <div className="form-group mr-sm-2">
+                                <div>
                                     <textarea
                                         id="postContent"
                                         type="text"
@@ -36,7 +27,7 @@ class Feed extends Component {
                                 </div>
                                 <button type="submit" className="btn btn-primary btn-block">Share</button>
                             </form>
-
+                            <br/>
                             {this.props.posts.map((post, key) => {
                                 return (
                                     <div className="card mb-4" key={key}>
@@ -50,7 +41,7 @@ class Feed extends Component {
 
                                             <small className="test-muted">{post.author}</small>
                                             <br/>
-                                            <big>{post.title}</big>
+
                                         </div>
                                         <ul id="postList" className="list-group list-group-flush">
                                             <li className="list-group-item">
