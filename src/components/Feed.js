@@ -13,7 +13,6 @@ class Feed extends Component {
                             <form onSubmit={(event) => {
                                 event.preventDefault()
                                 const content = this.postContent.value
-
                                 this.props.createPost(content)
                             }}>
                                 <div>

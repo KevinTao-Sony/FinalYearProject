@@ -52,7 +52,9 @@ class App extends Component {
                     posts: [...this.state.posts, post]//creates new array with new element added to he end es6 specific
                 })
             }
-            this.setState({ loading : false })
+            this.setState({ loading: false })
+            //remove genesis block
+            this.setState({ posts: this.state.posts.slice(1) })
         } else {
             console.log("contract not deployed to network")
         }

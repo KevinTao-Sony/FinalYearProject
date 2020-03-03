@@ -14,7 +14,7 @@ class Navbar extends Component {
                 </ul>
                 <a className="navbar-brand col-sm-2 col-md-1 mr-0 text-light">
                     Collabrative Work Space
-            </a>
+                </a>
                 <ul className="navbar-nav px-3">
                     <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
                         <small className='text-secondary'>
@@ -27,7 +27,6 @@ class Navbar extends Component {
                                 //identicon specific
                                 src={`data:image/png;base64,${new Identicon(this.props.account, 30).toString()}`}/> : <span></span>
                         }
- 
                     </li>
                 </ul>
             </nav>

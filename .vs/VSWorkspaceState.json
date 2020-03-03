@@ -5,11 +5,10 @@
     "\\public",
     "\\src",
     "\\src\\abis",
-    "\\src\\atoms",
     "\\src\\components",
     "\\src\\contracts",
     "\\test"
   ],
-  "SelectedNode": "\\test\\Project.js",
+  "SelectedNode": "\\src\\components\\Feed.js",
   "PreviewInSolutionExplorer": false
 }
