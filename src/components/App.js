@@ -54,7 +54,8 @@ class App extends Component {
             }
             this.setState({ loading: false })
             //remove genesis block
-            this.setState({ posts: this.state.posts.slice(1) })
+            this.setState({ posts: this.state.posts.slice(1).reverse() })
+
         } else {
             console.log("contract not deployed to network")
         }

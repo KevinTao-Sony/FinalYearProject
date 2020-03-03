@@ -4,8 +4,7 @@ import Dropzone from 'react-dropzone'
 import Web3 from 'web3';
 import Identicon from "identicon.js";
 import {
-    Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button
+    Card,  Button
 } from 'react-bootstrap';
 
 //import smart contract into the project
@@ -71,14 +70,33 @@ class Home extends Component {
         if (this.state.buffer === null) {
             window.alert("No files selected");
         }
-        else { this.uploadToIPFS() }
+        else { this.uploadToIPFSUpload() }
     }
 
-    async uploadToIPFS() {
+    async uploadToIPFSUpload() {
         for await (const result of ipfs.add(this.state.buffer)) {
             console.log(result.path)
             this.uploadDoc(result.path)
+            this.createPost(this.state.account + " made changes " + this.state.file_name);
         }
+    }
+
+    createPost(content) {
+        this.setState({ loading: true })
+        this.state.project.methods.createPost(content).send({ from: this.state.account })
+            .on('receipt', (receipt) => {
+                console.log('loaded')
+            })
+        window.location.reload()
+    }
+
+    uploadDoc(content) {
+        this.setState({ loading: true })
+        this.state.project.methods.uploadDoc(content, this.state.file_name).send({ from: this.state.account })
+            .on('receipt', (receipt) => {
+                console.log('loaded')
+            })
+        window.location.reload()
     }
 
     async loadBlockchainData() {
@@ -111,17 +129,6 @@ class Home extends Component {
             console.log("contract not deployed to network")
         }
     }
-
-    uploadDoc(content) {
-        this.setState({ loading: true })
-        this.state.project.methods.uploadDoc(content, this.state.file_name).send({ from: this.state.account })
-            .on('receipt', (receipt) => {
-                console.log('loaded')
-            })
-        window.location.reload()
-    }
-
-
 
     render() {
         return (

@@ -35,6 +35,13 @@ contract Project {
 		address author
 	);
 
+	event DocUploaded(
+		uint doc_id,
+		string title,
+		string content,
+		address author
+	);
+
 	constructor() public  {
 		name="project";
 	}
@@ -67,9 +74,10 @@ contract Project {
 	function updateDoc(uint _id, string memory _IPFShash, string memory _title) public {
 
 		//make a doc
-		docs[_id] = Doc(docCount, _title, _IPFShash, msg.sender);
+		docs[_id] = Doc(_id, _title, _IPFShash, msg.sender);
 
 		//Trigger Event, solidty provides a way for users to track events 
+		emit DocUploaded(_id,  _title, _IPFShash, msg.sender);
 		
 	}
 	

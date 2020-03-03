@@ -52,7 +52,7 @@ contract('Project', ([deployer, author]) => {
             assert.equal(post.author, author, 'author is correct')
         })
     })
-    describe('documents', async () => {
+    describe('create and list documents', async () => {
         let result, docCount
 
         before(async () => {
@@ -78,5 +78,27 @@ contract('Project', ([deployer, author]) => {
             assert.equal(doc.author, author, 'author is correct')
         })
     })
+    describe('Update documents', async () => {
+        let result, docCount, result_get
+
+        before(async () => {
+            result = await project.uploadDoc('0xffff', 'doc1', { from: author })
+            docCount = await project.docCount()
+            result_get = await project.updateDoc(docCount, "0xas", "doc1", { from: author })
+        })
+
+        it('changes a document', async () => {
+            //success
+            assert.equal(docCount, 2)
+            const event = result_get.logs[0].args
+            assert.equal(event.doc_id.toNumber(), docCount.toNumber(), 'id is correct')
+            assert.equal(event.content, '0xas', 'content is correct')
+            assert.equal(event.title, 'doc1', 'title is correct')
+            assert.equal(event.author, author, 'author is correct')
+            //content must not be empty
+
+        })
+    })
+
 })
 
