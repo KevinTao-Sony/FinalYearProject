@@ -7,7 +7,9 @@ contract Project {
 
 	//writting key value pair into the blockchain
 	mapping(uint => Post) public posts;
-	mapping(uint => Doc) public docs;
+	//mapping(uint => Doc) public Docs;
+	
+	Doc[] public document;
 
 	struct Post {
 		uint id;
@@ -48,17 +50,18 @@ contract Project {
 
 	function uploadDoc(string memory _IPFShash, string memory _title) public {
 		//upload documents to IPFS get hash then save hash on to blockchain
-		docCount++;
-
+		
 		//make a doc
-		docs[docCount] = Doc(docCount, _title, _IPFShash, msg.sender);
-
-		//Trigger Event, solidty provides a way for users to track events 
+		//Docs[docCount] = Doc(docCount, _title, _IPFShash, msg.sender);
+		document.push(Doc(docCount, _title, _IPFShash, msg.sender));
+		docCount++;
+		//Trigger Event, solidty provides a way for users to track events and test
 		emit DocCreated(docCount, _title, _IPFShash, msg.sender);
-	}	
+	}
 
 	function createPost(string memory _content) public {
 		//require valid content solidity specific function, if 1 then run rest of code, 
+
 		//else stops and refund gas
 
 		require(bytes(_content).length > 0 );
@@ -73,13 +76,27 @@ contract Project {
 
 	function updateDoc(uint _id, string memory _IPFShash, string memory _title) public {
 
-		//make a doc
-		docs[_id] = Doc(_id, _title, _IPFShash, msg.sender);
-
+		for (uint i=0; i<document.length; i++) {
+			if (document[i].id == _id){
+				document[i].content =  _IPFShash;
+				document[i].author =  msg.sender;
+			}
+		}
 		//Trigger Event, solidty provides a way for users to track events 
 		emit DocUploaded(_id,  _title, _IPFShash, msg.sender);
-		
-	}
 	
+	}
 
+	function deleteDoc(uint _id) public {
+
+		for (uint i=0; i<document.length; i++) {
+			if (document[i].id == _id){
+				delete document[i];
+				docCount--;
+			}
+		}	
+	}
+
+
+	  
 }

@@ -21,7 +21,7 @@ class Feed extends Component {
                                         type="text"
                                         ref={(input) => { this.postContent = input }}
                                         className="form-control"
-                                        placeholder="content placeholder"
+                                        placeholder="Update on you project?"
                                         required />
                                 </div>
                                 <button type="submit" className="btn btn-primary btn-block">Share</button>

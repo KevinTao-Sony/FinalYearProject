@@ -1,14 +1,13 @@
 
 import React, { Component }  from "react";
-import Dropzone from 'react-dropzone'
+import Dropzone, { useDropzone } from 'react-dropzone'
 import Web3 from 'web3';
 import Identicon from "identicon.js";
-import {
-    Card,  Button
-} from 'react-bootstrap';
-
+import { Card, Button} from 'react-bootstrap';
 //import smart contract into the project
 import Project from "../abis/Project.json";
+import ModelDrop from "./Modal.js"
+
 
 const ipfsClient = require('ipfs-http-client');
 //connected to the infura public gatway but can be change to the personal network nodes
@@ -16,11 +15,13 @@ const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: '5001', protocol: 'https
 
 const IPFS_URL = "https://ipfs.infura.io/ipfs/";
 //tpyical hash on ipfs QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC
+
 class Home extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            acceptedFiles: [],
             buffer: null,
             file_name:"",
             account: "",
@@ -28,6 +29,8 @@ class Home extends Component {
             docCount: 0,
             docs: [],
             loading: true,
+            mapping: "",
+
         }
     }
     async componentWillMount() {
@@ -50,6 +53,7 @@ class Home extends Component {
     }
 
     onDrop(acceptedFiles) {
+        this.setState({ acceptedFiles: acceptedFiles})
         acceptedFiles.forEach((file) => {
         this.setState({ file_name: file.name })
         const reader = new FileReader()
@@ -59,8 +63,8 @@ class Home extends Component {
         reader.onloadend = () => {
             // Do whatever you want with the file contents
             this.setState({ buffer: Buffer(reader.result) })
-        }
-
+            }
+           
         })
     }
 
@@ -75,11 +79,11 @@ class Home extends Component {
 
     async uploadToIPFSUpload() {
         for await (const result of ipfs.add(this.state.buffer)) {
-            console.log(result.path)
             this.uploadDoc(result.path)
-            this.createPost(this.state.account + " made changes " + this.state.file_name);
+            this.createPost("Uploaded document: " + this.state.file_name);
         }
     }
+
 
     createPost(content) {
         this.setState({ loading: true })
@@ -90,6 +94,8 @@ class Home extends Component {
         window.location.reload()
     }
 
+
+
     uploadDoc(content) {
         this.setState({ loading: true })
         this.state.project.methods.uploadDoc(content, this.state.file_name).send({ from: this.state.account })
@@ -98,6 +104,17 @@ class Home extends Component {
             })
         window.location.reload()
     }
+    
+    deleteDoc(id, title) {
+        this.setState({ loading: true })
+        this.state.project.methods.deleteDoc(id).send({ from: this.state.account })
+            .on('receipt', (receipt) => {
+                console.log('loaded')
+            })
+        window.location.reload()
+        this.createPost("Deleted: " + title)
+    }
+    
 
     async loadBlockchainData() {
         const web3 = window.web3
@@ -115,7 +132,8 @@ class Home extends Component {
             //get the count to render each post (needed cause mapping)
             this.setState({ docCount })
             for (var i = 0; i <= docCount; i++) {
-                const doc = await project.methods.docs(i).call()
+                const doc = await project.methods.document(i).call()
+                
 
                 this.setState({
 
@@ -130,6 +148,8 @@ class Home extends Component {
         }
     }
 
+
+
     render() {
         return (
             <div>
@@ -141,15 +161,22 @@ class Home extends Component {
                     return (
                         <div>
                         <div class="col-sm-6" >
-                        <Card style={{ width: '15em' }}>
+                        <Card style={{ width: '15em', height:"20em" }}>
                                 <Card.Img
                                 variant="top"
                                 style={{ width: '2em' }}
                                 src={`data:image/png;base64,${new Identicon(doc.author, 30).toString()}`} />
-                            <Card.Body>
+                                    <Card.Body style={{ display: "flex", flexDirection : "column"}}>
                                     <Card.Title>{doc.title}</Card.Title>
                                     <footer className="blockquote-footer"> Last edited by {doc.author}</footer>
-                                    <Button onClick={() => window.open(IPFS_URL + doc.content , "_blank")} variant="primary" >Go to document</Button>
+                                        <Button style={{ marginTop: "auto" }} onClick={() => window.open(IPFS_URL + doc.content, "_blank")} variant="primary" >Go to document</Button>
+
+                                        
+                                        <ModelDrop document={doc} />
+
+                                        <Button className="btn btn-danger" style={{ marginTop: "0" }} onClick={()=> this.deleteDoc(doc.id, doc.title)}>delete</Button>
+
+
                             </Card.Body>
                         </Card>
                         </div>
@@ -167,9 +194,17 @@ class Home extends Component {
                                 <input {...getInputProps()} />
                                 <p>Drag 'n' drop some files here to add them in the project</p>
                             </div>
+                          
+          
                         </section>
                     )}
+    
                 </Dropzone>
+
+                {this.state.acceptedFiles.map(file => (
+                    <li key={file.path}>
+                        {file.path} - {file.size} bytes
+                     </li>))}
                 <form onSubmit={this.onSubmit}>
 
                     <button type="submit" className="btn btn-primary btn-block">UPLOAD TO BLOCKCHAIN</button> 

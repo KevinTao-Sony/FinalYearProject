@@ -72,7 +72,7 @@ contract('Project', ([deployer, author]) => {
             await project.createPost('', { from: author }).should.be.rejected
         })
         it('list document', async () => {
-            const doc = await project.docs(docCount)
+            const doc = await project.documents(docCount)
             assert.equal(doc.id.toNumber(), docCount.toNumber(), 'id is correct')
             assert.equal(doc.content, '0xffff', 'content is correct')
             assert.equal(doc.author, author, 'author is correct')

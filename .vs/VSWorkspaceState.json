@@ -1,14 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\migrations",
-    "\\public",
     "\\src",
-    "\\src\\abis",
     "\\src\\components",
-    "\\src\\contracts",
     "\\test"
   ],
-  "SelectedNode": "\\src\\components\\Feed.js",
+  "SelectedNode": "\\src\\components\\Modal.js",
   "PreviewInSolutionExplorer": false
 }
