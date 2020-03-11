@@ -1,20 +1,20 @@
 
 import React, { Component }  from "react";
-import Dropzone, { useDropzone } from 'react-dropzone'
+import Dropzone from 'react-dropzone'
 import Web3 from 'web3';
 import Identicon from "identicon.js";
 import { Card, Button} from 'react-bootstrap';
 //import smart contract into the project
 import Project from "../abis/Project.json";
 import ModelDrop from "./Modal.js"
-
+import Navbar from "./Navbar";
 
 const ipfsClient = require('ipfs-http-client');
 //connected to the infura public gatway but can be change to the personal network nodes
 const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
 
 const IPFS_URL = "https://ipfs.infura.io/ipfs/";
-//tpyical hash on ipfs QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC
+
 
 class Home extends Component {
 
@@ -153,6 +153,7 @@ class Home extends Component {
     render() {
         return (
             <div>
+                <Navbar account={this.state.account} />
                  <br/>
                  <br/>
                 <h4>Files in the Project</h4>

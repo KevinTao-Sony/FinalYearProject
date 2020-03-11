@@ -1,4 +1,4 @@
-import React, { useState, Component, createRef} from "react";
+import React, { Component} from "react";
 import { Modal, Button } from 'react-bootstrap';
 import Dropzone from 'react-dropzone'; 
 import Project from "../abis/Project.json";
@@ -10,7 +10,6 @@ const ipfsClient = require('ipfs-http-client');
 //connected to the infura public gatway but can be change to the personal network nodes
 const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
 
-const IPFS_URL = "https://ipfs.infura.io/ipfs/";
 
 export default class ModelDrop extends Component {
 
