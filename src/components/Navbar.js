@@ -13,7 +13,7 @@ class Navbar extends Component {
                     <li><NavLink to="/App">Feed</NavLink></li>
                 </ul>
                 <a className="navbar-brand col-sm-2 col-md-1 mr-0 text-light">
-                    Collabrative Work Space
+                    Distributed Collabrative Work Space
                 </a>
                 <ul className="navbar-nav px-3">
                     <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">

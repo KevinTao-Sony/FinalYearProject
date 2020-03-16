@@ -11,6 +11,7 @@ contract('Project', ([deployer, author]) => {
         project = await Project.deployed()
     })
     describe('deployment', async () => {
+
         it('deploys successfully', async () => {
             const address = await project.address
             assert.notEqual(address, 0x0)
@@ -71,11 +72,11 @@ contract('Project', ([deployer, author]) => {
             //content must not be empty
             await project.createPost('', { from: author }).should.be.rejected
         })
-        it('list document', async () => {
-            const doc = await project.documents(docCount)
-            assert.equal(doc.id.toNumber(), docCount.toNumber(), 'id is correct')
-            assert.equal(doc.content, '0xffff', 'content is correct')
-            assert.equal(doc.author, author, 'author is correct')
+        it('delete document', async () => {
+            const doc = await project.deleteDoc(docCount)
+            const event = result.logs[0].args
+            assert.equal(event.doc_id.toNumber(), docCount.toNumber(), 'id is correct')
+
         })
     })
     describe('Update documents', async () => {

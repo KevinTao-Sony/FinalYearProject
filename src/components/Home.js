@@ -111,8 +111,8 @@ class Home extends Component {
             .on('receipt', (receipt) => {
                 console.log('loaded')
             })
-        window.location.reload()
         this.createPost("Deleted: " + title)
+        window.location.reload()
     }
     
 
@@ -133,7 +133,8 @@ class Home extends Component {
             this.setState({ docCount })
             for (var i = 0; i <= docCount; i++) {
                 const doc = await project.methods.document(i).call()
-                
+
+
 
                 this.setState({
 
@@ -141,7 +142,14 @@ class Home extends Component {
                 })
 
             }
-            this.setState({ docs: this.state.docs.slice(1) })
+            
+
+            var tempDoc = this.state.docs.slice()
+            tempDoc = tempDoc.filter(function (el) {
+                return el != null;
+            });
+            this.setState({ docs: tempDoc})
+            //this.setState({ docs: this.state.docs.slice(1) })
             this.setState({ loading: false })
         } else {
             console.log("contract not deployed to network")
@@ -158,32 +166,31 @@ class Home extends Component {
                  <br/>
                 <h4>Files in the Project</h4>
                 <div class="row">
-                {this.state.docs.map((doc, key) => {
-                    return (
-                        <div>
-                        <div class="col-sm-6" >
-                        <Card style={{ width: '15em', height:"20em" }}>
-                                <Card.Img
-                                variant="top"
-                                style={{ width: '2em' }}
-                                src={`data:image/png;base64,${new Identicon(doc.author, 30).toString()}`} />
-                                    <Card.Body style={{ display: "flex", flexDirection : "column"}}>
+                    {console.log(this.state.docs)}
+                    {this.state.docs.length <
+                        0 ? console.log("nodocs") : this.state.docs.map((doc, key) => {
+                            return (
+                                (doc == null || doc.content == "") ? <div>{ console.log("hi") } </div>:
+                            <div>
+                                    
+                            <div class="col-sm-6" >
+                            <Card style={{ width: '15em', height:"20em" }}>
+                                    <Card.Img
+                                    variant="top"
+                                    style={{ width: '2em' }}
+                                    src={`data:image/png;base64,${new Identicon(doc.author, 30).toString()}`} />
+                                        <Card.Body style={{ display: "flex", flexDirection : "column"}}>
                                     <Card.Title>{doc.title}</Card.Title>
                                     <footer className="blockquote-footer"> Last edited by {doc.author}</footer>
-                                        <Button style={{ marginTop: "auto" }} onClick={() => window.open(IPFS_URL + doc.content, "_blank")} variant="primary" >Go to document</Button>
-
-                                        
-                                        <ModelDrop document={doc} />
-
-                                        <Button className="btn btn-danger" style={{ marginTop: "0" }} onClick={()=> this.deleteDoc(doc.id, doc.title)}>delete</Button>
-
-
-                            </Card.Body>
-                        </Card>
-                        </div>
-                        <br />
-                        </div>
-                )})}
+                                    <Button style={{ marginTop: "auto" }} onClick={() => window.open(IPFS_URL + doc.content, "_blank")} variant="primary" >Go to document</Button>
+                                    <ModelDrop document={doc} />
+                                    <Button className="btn btn-danger" style={{ marginTop: "0" }} onClick={()=> this.deleteDoc(doc.id, doc.title)}>delete</Button>
+                                    </Card.Body>
+                                    </Card>
+                                    </div>
+                                    <br />
+                            </div>
+                            )})}
                 </div>
                 <br />
                 <div class="border-top border-dark"></div>

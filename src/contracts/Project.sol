@@ -44,6 +44,12 @@ contract Project {
 		address author
 	);
 
+	event DocDeleted(
+		uint doc_id
+
+	);
+
+
 	constructor() public  {
 		name="project";
 	}
@@ -95,6 +101,7 @@ contract Project {
 				docCount--;
 			}
 		}	
+		emit DocDeleted(_id);
 	}
 
 
