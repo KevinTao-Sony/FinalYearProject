@@ -4,7 +4,7 @@ require('chai')
     .use(require('chai-as-promised'))
     .should()
 
-contract('Project', ([deployer, author]) => {
+contract('Project', (author) => {
     let project
 
     before(async () => {
@@ -29,9 +29,9 @@ contract('Project', ([deployer, author]) => {
 
     describe('posts', async () => {
         let result, postCount
-
+        
         before(async () => {
-            result = await project.createPost('test', { from: author })
+            result = await project.createPost('test', { from: author[0] })
             postCount = await project.postCount()
         })
 
@@ -53,11 +53,11 @@ contract('Project', ([deployer, author]) => {
             assert.equal(post.author, author, 'author is correct')
         })
     })
-    describe('create and list documents', async () => {
+    describe('create and delete documents', async () => {
         let result, docCount
 
         before(async () => {
-            result = await project.uploadDoc('0xffff', 'doc1', { from: author })
+            result = await project.uploadDoc('0xffff', 'doc1', { from: author[0] })
             docCount = await project.docCount()
         })
 
@@ -83,9 +83,9 @@ contract('Project', ([deployer, author]) => {
         let result, docCount, result_get
 
         before(async () => {
-            result = await project.uploadDoc('0xffff', 'doc1', { from: author })
+            result = await project.uploadDoc('0xffff', 'doc1', { from: author[0] })
             docCount = await project.docCount()
-            result_get = await project.updateDoc(docCount, "0xas", "doc1", { from: author })
+            result_get = await project.updateDoc(docCount, "0xas", "doc1", { from: author[0] })
         })
 
         it('changes a document', async () => {
@@ -95,7 +95,7 @@ contract('Project', ([deployer, author]) => {
             assert.equal(event.doc_id.toNumber(), docCount.toNumber(), 'id is correct')
             assert.equal(event.content, '0xas', 'content is correct')
             assert.equal(event.title, 'doc1', 'title is correct')
-            assert.equal(event.author, author, 'author is correct')
+            assert.equal(event.author, author[0], 'author is correct')
             //content must not be empty
 
         })
