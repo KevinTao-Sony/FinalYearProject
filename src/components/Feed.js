@@ -32,6 +32,7 @@ class Feed extends Component {
                                     <div className="card mb-4" key={key}>
                                         <div className="card-header">
                                             <img className="mr-2"
+                                                alt=""
                                                 width="30"
                                                 height="30"
                                                 //identicon specific

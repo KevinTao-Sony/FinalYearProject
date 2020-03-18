@@ -12,7 +12,7 @@ class Navbar extends Component {
                     <li><NavLink exact to="/">Home</NavLink></li>
                     <li><NavLink to="/App">Feed</NavLink></li>
                 </ul>
-                <a className="navbar-brand col-sm-2 col-md-1 mr-0 text-light">
+                <a href="https://github.com/KevinTao-Sony/FinalYearProject" className="navbar-brand col-sm-2 col-md-1 mr-0 text-light">
                     Distributed Collabrative Work Space
                 </a>
                 <ul className="navbar-nav px-3">
@@ -22,6 +22,8 @@ class Navbar extends Component {
                         </small>
                         {this.props.account ?
                             <img className="ml-2"
+                                alt=""
+
                                 width="30"
                                 height="30"
                                 //identicon specific

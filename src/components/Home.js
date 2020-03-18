@@ -170,7 +170,7 @@ class Home extends Component {
                     {this.state.docs.length <
                         0 ? console.log("nodocs") : this.state.docs.map((doc, key) => {
                             return (
-                                (doc == null || doc.content == "") ? <div>{ console.log("hi") } </div>:
+                                (doc ===null || doc.content === "") ? <div>{ console.log("hi") } </div>:
                             <div>
                                     
                             <div class="col-sm-6" >
