@@ -103,7 +103,5 @@ contract Project {
 		}	
 		emit DocDeleted(_id);
 	}
-
-
-	  
+  
 }

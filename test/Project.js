@@ -41,16 +41,15 @@ contract('Project', (author) => {
             const event = result.logs[0].args
             assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
             assert.equal(event.content, 'test', 'content is correct')
-            //assert.equal(event.title, 'title', 'title is correct')
-            assert.equal(event.author, author, 'author is correct')
+            assert.equal(event.author, author[0], 'author is correct')
             //content must not be empty
-            await project.createPost('', { from: author }).should.be.rejected
+            await project.createPost('', { from: author[0] }).should.be.rejected
         })
         it('list post', async () => {
             const post = await project.posts(postCount)
             assert.equal(post.id.toNumber(), postCount.toNumber(), 'id is correct')
             assert.equal(post.content, 'test', 'content is correct')
-            assert.equal(post.author, author, 'author is correct')
+            assert.equal(post.author, author[0], 'author is correct')
         })
     })
     describe('create and delete documents', async () => {
@@ -68,9 +67,9 @@ contract('Project', (author) => {
             assert.equal(event.doc_id.toNumber(), docCount.toNumber(), 'id is correct')
             assert.equal(event.content, '0xffff', 'content is correct')
             assert.equal(event.title, 'doc1', 'title is correct')
-            assert.equal(event.author, author, 'author is correct')
+            assert.equal(event.author, author[0], 'author is correct')
             //content must not be empty
-            await project.createPost('', { from: author }).should.be.rejected
+            await project.createPost('', { from: author[0] }).should.be.rejected
         })
         it('delete document', async () => {
             const doc = await project.deleteDoc(docCount)
